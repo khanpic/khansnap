@@ -6,6 +6,52 @@
     <title>작업 후기 게시판</title>
     <link rel="stylesheet" href="style.css" />
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script>
+    const SHEET_API_URL = "YOUR_DEPLOYED_WEB_APP_URL"; // 웹 앱 URL 입력
+
+    function loadReviews() {
+        fetch(SHEET_API_URL)
+            .then(response => response.json())
+            .then(reviews => {
+                let reviewList = document.getElementById("reviewList");
+                reviewList.innerHTML = "";
+                reviews.forEach(review => {
+                    let reviewItem = document.createElement("div");
+                    reviewItem.classList.add("review-item");
+                    reviewItem.innerHTML = `<strong>${review.name}</strong><p>${review.text}</p>`;
+                    reviewList.appendChild(reviewItem);
+                });
+            })
+            .catch(error => console.error("Error loading reviews:", error));
+    }
+
+    function addReview() {
+        let name = document.getElementById("name").value.trim();
+        let reviewText = document.getElementById("review").value.trim();
+
+        if (!name || !reviewText) {
+            alert("이름과 후기를 입력하세요!");
+            return;
+        }
+
+        fetch(SHEET_API_URL, {
+            method: "POST",
+            body: JSON.stringify({ name: name, review: reviewText }),
+            headers: { "Content-Type": "application/json" }
+        })
+        .then(response => response.text())
+        .then(result => {
+            if (result === "Success") {
+                document.getElementById("name").value = "";
+                document.getElementById("review").value = "";
+                loadReviews();
+            }
+        })
+        .catch(error => console.error("Error adding review:", error));
+    }
+
+    window.onload = loadReviews;
+</script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap');
     body {
