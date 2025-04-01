@@ -41,5 +41,21 @@
         <img src=".//포폴24.jpg" alt="포트폴리오 이미지" onclick="openLightbox(this)">
         <img src=".//포폴25.jpg" alt="포트폴리오 이미지" onclick="openLightbox(this)">
     </div>
+    <!-- Lightbox 모달 -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <span class="close">&times;</span>
+        <img id="lightbox-img" src="">
+    </div>
+
+    <script>
+        function openLightbox(imgElement) {
+            document.getElementById("lightbox-img").src = imgElement.src;
+            document.getElementById("lightbox").style.display = "flex";
+        }
+
+        function closeLightbox() {
+            document.getElementById("lightbox").style.display = "none";
+        }
+    </script>
 </body>
 </html>
